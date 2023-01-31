@@ -23,8 +23,10 @@ maybe_brotli() {
     TMP="$COMP.tmp"
     rm -f $TMP
 
-    echo "brotli $1"
-    brotli --suffix=".br.tmp" "$1"
+    echo "brotli $1 (minimal compression):"
+    time brotli --quality=1 --suffix=".br.tmp" "$1"
+    #echo "botli $1 (default compression):"
+    #time brotli --suffix=".br.tmp" "$1"
 
     sync $TMP
     mv $TMP $COMP
@@ -43,8 +45,12 @@ maybe_zopfli() {
     TMP="$COMP.tmp"
     rm -f $TMP
 
-    echo "zopfli $1"
-    zopfli -c "$1" > $TMP
+    echo "zopfli $1 (pigz compression):"
+    #time zopfli --i1 -c "$1" > $TMP
+    #time pigz -11 -c "$1" > $TMP
+    time pigz -6 -c "$1" > $TMP
+    #echo "zopfli $1 (default compression):"
+    #time zopfli -c "$1" > $TMP
 
     sync $TMP
     mv $TMP $COMP

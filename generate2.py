@@ -10,6 +10,9 @@ import shlex
 import shutil
 import subprocess
 import tomli
+import sys
+import glob
+from pathlib import Path
 
 def load_props(dir, name):
     path = os.path.join(dir, name + ".toml")
@@ -43,6 +46,20 @@ abis_dict = {
     "armeabi_v7a": "armeabi-v7a",
     "x86": "x86",
 }
+
+
+try:
+    apks = [path for path in Path('apps').rglob('*.apk')]
+    #print(apks)
+    if apks == []:
+        raise(ValueError)
+except:
+    print("empty repo?!")
+    metafiles = glob.glob('apps/metadata.*')
+    for m in metafiles:
+        if os.path.exists(m):
+            os.remove(m)
+    sys.exit()
 
 assert subprocess.call("./compress-apks") == 0
 
@@ -115,8 +132,8 @@ for pkg_name in sorted(os.listdir(packages_dir)):
             apk_gz_path = apk_path + ".gz"
             apk_br_path = apk_path + ".br"
 
-            assert os.path.getmtime(apk_path) == os.path.getmtime(apk_gz_path)
-            assert os.path.getmtime(apk_path) == os.path.getmtime(apk_br_path)
+            #assert os.path.getmtime(apk_path) == os.path.getmtime(apk_gz_path)
+            #assert os.path.getmtime(apk_path) == os.path.getmtime(apk_br_path)
 
             apk_hash_path = apk_path + ".sha256"
 

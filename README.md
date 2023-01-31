@@ -19,3 +19,15 @@ arbitrary name representing your project (not used for anything):
     openssl x509 -in fsverity_cert.0.pem -out fsverity_cert.0.der -outform der
 
 The `0` refers to the generation of the key. This is used for key rotation.
+
+# Source definition
+
+Available sources are defined in the sources of the Apps app.
+
+1. class `PackageSource` defined in 
+
+`app/src/main/java/app/grapheneos/apps/core/Repo.kt`
+
+2. translated as `pkg_source_` in:
+
+`app/src/main/res/values/strings.xml`
