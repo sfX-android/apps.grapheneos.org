@@ -109,7 +109,8 @@ for pkg_name in sorted(os.listdir(packages_dir)):
         for line in lines[1:-1]:
             kv = shlex.split(line.decode())
             if kv[0].startswith("application-label:"):
-                pkg_props["label"] = kv[0].split(":")[1]
+                clabel = re.sub(r'[^\x00-\x7F]+',' ', kv[0].split(":")[1])
+                pkg_props["label"] = clabel
             elif kv[0].startswith("sdkVersion"):
                 pkg_props["minSdk"] = int(kv[0].split(":")[1])
             elif kv[0].startswith("native-code"):
